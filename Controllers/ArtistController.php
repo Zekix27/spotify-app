@@ -150,4 +150,10 @@ class ArtistController extends Controller
 
         header('Location:/artist');
     }
+
+    public function deleteFavorite() {
+        $id = $_POST['id'];
+        $artist = Artist::createEmptyArtist();
+        $artist->delete($id);
+    }
 }

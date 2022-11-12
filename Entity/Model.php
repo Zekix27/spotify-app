@@ -105,7 +105,7 @@ class Model extends Db
 
     public function delete(int $id): bool|\PDOStatement
     {
-        return $this->requete("DELETE FROM {$this->table} WHERE id = ?", [$id]);
+        return $this->requete("DELETE FROM {$this->table} WHERE artistId = ?", [$id]);
     }
 
 

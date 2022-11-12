@@ -234,4 +234,23 @@ class Artist extends Model
             $data['uri']
         );
     }
+
+    /**
+     * @return self
+     */
+    public static function createEmptyArtist(): self
+    {
+        return new self(
+            new ExternalUrl(''),
+            null,
+            [],
+            '',
+            '',
+            [],
+            '',
+            null,
+            '',
+            ''
+        );
+    }
 }

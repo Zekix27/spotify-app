@@ -21,6 +21,9 @@
                 <li>
                     <a href="/artist" class="btn btn-light">Artists</a>
                 </li>
+                <li>
+                    <a href="/erwan" class="btn btn-light">Erwan</a>
+                </li>
             </ul>
         </div>
     </div>
