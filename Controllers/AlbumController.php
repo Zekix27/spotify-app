@@ -78,4 +78,23 @@ class AlbumController extends Controller
 
         return json_decode($result, true);
     }
+
+    public function addFavorite() {
+        $albumJson = self::getAlbum($_POST['id']);
+        $album = Album::fromJson($albumJson);
+
+        $checkInDB = $album->findBy(['albumId' => $album->getAlbumId()]);
+
+        if(empty($checkInDB)) {
+            $album->create();
+        }
+
+        header('Location:/album');
+    }
+
+    public function deleteFavorite() {
+        $id = $_POST['id'];
+        $album = Album::createEmptyAlbum();
+        $album->delete($id);
+    }
 }

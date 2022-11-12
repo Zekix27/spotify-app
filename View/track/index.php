@@ -10,18 +10,18 @@ use App\Entity\Album;
     <div class="d-flex flex-column align-items-center mb-2">
         <?php
         /** @var boolean $isQuery */
-        $title = 'Cherchez un album';
+        $title = 'Cherchez une musique';
 
         if (!$isQuery) {
             /** @var Album $album */
-            $title = 'Voici les albums de '. $album->getName();
+            $title = 'Voici les musiques de l\'album '. $album->getName();
         }
         ?>
         <h1 class="display-5 fw-bold"><?= $title ?></h1>
         <?php
         if ($isQuery) {
             echo '   
-                    <form class="col-lg-auto mb-3 mb-lg-0 w-50" role="search" method="post" action="album">
+                    <form class="col-lg-auto mb-3 mb-lg-0 w-50" role="search" method="post" action="track">
                         <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
                     </form>
                 ';
@@ -36,6 +36,7 @@ use App\Entity\Album;
                 <th>Song</th>
                 <th>Author</th>
                 <th>Nombre de disque</th>
+                <th>Favorite</th>
             </tr>
             <?php
             function millisecondToMinSecFormat(int $milliseconde): string
@@ -67,6 +68,17 @@ use App\Entity\Album;
                     <td><a href="'. $item->getExternalUrls()->getSpotify() .'">Spotify link</a></td>
                     <td>'. $artists .'</td>
                     <td>'. $item->getDiscNumber() .'</td>
+                    <td>
+                        <form action="/track/addFavorite" method="post">
+                            <input type="hidden" name="id" value="'. $item->getTrackId() .'">
+                            <label>
+                                <input type="submit" style="display: none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart top-0 end-0 m-1 favorite">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </label>
+                        </form>
+                    </td>
                 </tr>
         ';
             }

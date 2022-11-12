@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-class Track
+class Track extends Model
 {
+    public int $id;
     /**
      * @param Artist[] $artists
      * @param string[] $availableMarkets
@@ -12,7 +13,7 @@ class Track
      * @param bool $explicit
      * @param ExternalUrl $externalUrls
      * @param string $href
-     * @param string $id
+     * @param string $trackId
      * @param bool $isLocal
      * @param string $name
      * @param string | null $previewUrl
@@ -28,7 +29,7 @@ class Track
         public bool $explicit,
         public ExternalUrl $externalUrls,
         public string $href,
-        public string $id,
+        public string $trackId,
         public bool $isLocal,
         public string $name,
         public string | null $previewUrl,
@@ -37,6 +38,7 @@ class Track
         public string $uri,
     )
     {
+        $this->table = 'track';
     }
 
     /**
@@ -98,9 +100,9 @@ class Track
     /**
      * @return string
      */
-    public function getId(): string
+    public function getTrackId(): string
     {
-        return $this->id;
+        return $this->trackId;
     }
 
     /**
@@ -222,12 +224,12 @@ class Track
     }
 
     /**
-     * @param string $id
+     * @param string $trackId
      * @return self
      */
-    public function setId(string $id): self
+    public function setId(string $trackId): self
     {
-        $this->id = $id;
+        $this->trackId = $trackId;
         return $this;
     }
 
@@ -314,6 +316,29 @@ class Track
             $data['track_number'],
             $data['type'],
             $data['uri']
+        );
+    }
+
+    /**
+     * @return self
+     */
+    public static function createEmptyTrack(): self
+    {
+        return new self(
+            [],
+            [],
+            0,
+            0,
+            false,
+            new ExternalUrl(''),
+            '',
+            '',
+            false,
+            '',
+            null,
+            0,
+            '',
+            ''
         );
     }
 }

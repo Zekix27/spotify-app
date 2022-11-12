@@ -83,4 +83,23 @@ class TrackController extends Controller
 
         return json_decode($result, true);
     }
+
+    public function addFavorite() {
+        $trackJson = self::getTrack($_POST['id']);
+        $track = Track::fromJson($trackJson);
+
+        $checkInDB = $track->findBy(['trackId' => $track->getTrackId()]);
+
+        if(empty($checkInDB)) {
+            $track->create();
+        }
+
+        header('Location:/track');
+    }
+
+    public function deleteFavorite() {
+        $id = $_POST['id'];
+        $track = Track::createEmptyTrack();
+        $track->delete($id);
+    }
 }

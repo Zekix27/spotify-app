@@ -67,6 +67,9 @@ class Model extends Db
                 if (is_array($value) || is_object($value)) {
                     $values[] = json_encode($value);
                 }
+                else if (is_bool($value)) {
+                    $values[] = (int)$value;
+                }
                 else {
                     $values[] = $value;
                 }

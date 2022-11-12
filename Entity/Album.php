@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-class Album
+class Album extends Model
 {
+    public int $id;
     /**
      * @param ?string $albumGroup
      * @param ?string $albumType
@@ -11,7 +12,7 @@ class Album
      * @param string[] $availableMarkets
      * @param ExternalUrl $externalUrls
      * @param string $href
-     * @param string $id
+     * @param string $albumId
      * @param Image[] $images
      * @param string $name
      * @param string $releaseDate
@@ -21,22 +22,23 @@ class Album
      * @param string $uri
      */
     public function __construct(
-        private ?string $albumGroup,
-        private ?string $albumType,
-        private array $artists,
-        private array $availableMarkets,
-        private ExternalUrl $externalUrls,
-        private string $href,
-        private string $id,
-        private array $images,
-        private string $name,
-        private string $releaseDate,
-        private string $releaseDatePrecision,
-        private int $totalTracks,
-        private string $type,
-        private string $uri,
+        public ?string $albumGroup,
+        public ?string $albumType,
+        public array $artists,
+        public array $availableMarkets,
+        public ExternalUrl $externalUrls,
+        public string $href,
+        public string $albumId,
+        public array $images,
+        public string $name,
+        public string $releaseDate,
+        public string $releaseDatePrecision,
+        public int $totalTracks,
+        public string $type,
+        public string $uri,
     )
     {
+        $this->table = 'album';
     }
 
     /**
@@ -90,9 +92,9 @@ class Album
     /**
      * @return string
      */
-    public function getId(): string
+    public function getAlbumId(): string
     {
-        return $this->id;
+        return $this->albumId;
     }
 
     /**
@@ -212,12 +214,12 @@ class Album
     }
 
     /**
-     * @param string $id
+     * @param string $albumId
      * @return self
      */
-    public function setId(string $id): self
+    public function setId(string $albumId): self
     {
-        $this->id = $id;
+        $this->albumId = $albumId;
         return $this;
     }
 
@@ -316,6 +318,29 @@ class Album
             $data['total_tracks'],
             $data['type'],
             $data['uri']
+        );
+    }
+
+    /**
+     * @return self
+     */
+    public static function createEmptyAlbum(): self
+    {
+        return new self(
+            '',
+            '',
+            [],
+            [],
+            new ExternalUrl(''),
+            '',
+            '',
+            [],
+            '',
+            '',
+            '',
+            0,
+            '',
+            ''
         );
     }
 }
