@@ -16,13 +16,22 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ul-navbar" style="gap: 10px">
                 <li>
-                    <a href="/" class="btn btn-light">Accueil</a>
+                    <a href="/spotify" class="btn btn-light">Accueil</a>
                 </li>
                 <li>
-                    <a href="/artist" class="btn btn-light">Artists</a>
+                    <a href="/artist" class="btn btn-light">Artist</a>
+                </li>
+                <li>
+                    <a href="/album" class="btn btn-light">Album</a>
+                </li>
+                <li>
+                    <a href="/track" class="btn btn-light">Track</a>
                 </li>
                 <li>
                     <a href="/erwan" class="btn btn-light">Erwan</a>
+                </li>
+                <li>
+                    <a href="/main" class="btn btn-light">Json</a>
                 </li>
             </ul>
         </div>

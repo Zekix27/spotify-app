@@ -1,11 +1,33 @@
 <?php
 use App\Autoloader;
 use App\Entity\Track;
+use App\Entity\Album;
 
 
 ?>
 
 <main>
+    <div class="d-flex flex-column align-items-center mb-2">
+        <?php
+        /** @var boolean $isQuery */
+        $title = 'Cherchez un album';
+
+        if (!$isQuery) {
+            /** @var Album $album */
+            $title = 'Voici les albums de '. $album->getName();
+        }
+        ?>
+        <h1 class="display-5 fw-bold"><?= $title ?></h1>
+        <?php
+        if ($isQuery) {
+            echo '   
+                    <form class="col-lg-auto mb-3 mb-lg-0 w-50" role="search" method="post" action="album">
+                        <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
+                    </form>
+                ';
+        }
+        ?>
+    </div>
     <div class="container mt-4">
         <table class="table table-dark table-striped">
             <tr>

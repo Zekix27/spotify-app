@@ -5,8 +5,8 @@ namespace App\Entity;
 class Album
 {
     /**
-     * @param string $albumGroup
-     * @param string $albumType
+     * @param ?string $albumGroup
+     * @param ?string $albumType
      * @param Artist[] $artists
      * @param string[] $availableMarkets
      * @param ExternalUrl $externalUrls
@@ -21,8 +21,8 @@ class Album
      * @param string $uri
      */
     public function __construct(
-        private string $albumGroup,
-        private string $albumType,
+        private ?string $albumGroup,
+        private ?string $albumType,
         private array $artists,
         private array $availableMarkets,
         private ExternalUrl $externalUrls,
@@ -40,17 +40,17 @@ class Album
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getAlbumGroup(): string
+    public function getAlbumGroup(): string | null
     {
         return $this->albumGroup;
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getAlbumType(): string
+    public function getAlbumType(): string | null
     {
         return $this->albumType;
     }
@@ -152,20 +152,20 @@ class Album
     }
 
     /**
-     * @param string $albumGroup
+     * @param string | null $albumGroup
      * @return self
      */
-    public function setAlbumGroup(string $albumGroup): self
+    public function setAlbumGroup(string | null $albumGroup): self
     {
         $this->albumGroup = $albumGroup;
         return $this;
     }
 
     /**
-     * @param string $albumType
+     * @param string | null $albumType
      * @return self
      */
-    public function setAlbumType(string $albumType): self
+    public function setAlbumType(string | null $albumType): self
     {
         $this->albumType = $albumType;
         return $this;
@@ -298,12 +298,12 @@ class Album
     public static function fromJson(array $data): self
     {
         return new self(
-            $data['album_group'],
-            $data['album_type'],
+            $data['album_group'] ?? null,
+            $data['album_type'] ?? null,
             array_map(static function($data) {
                 return Artist::fromJson($data);
-            }, $data['artists']),
-            $data['available_markets'],
+            }, $data['spotify'] ?? []),
+            $data['available_markets'] ?? [],
             ExternalUrl::fromJson($data['external_urls']),
             $data['href'],
             $data['id'],

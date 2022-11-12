@@ -1,10 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Image;
-use App\Entity\Track;
 
 class ArtistController extends Controller
 {
@@ -34,49 +32,14 @@ class ArtistController extends Controller
             }
         }
 
-        $this->render('artists/index', compact('artists'));
-    }
-
-    /**
-     * @param $id
-     * @return void
-     */
-    public function album($id)
-    {
-        $jsonArtistResult = $this->getArtist($id);
-        $artist = $this->checkArtistPicture($jsonArtistResult);
-
-        $albums = [];
-
-        $jsonAlbumResult = $this->getAlbum($id);
-        foreach ($jsonAlbumResult['items'] as $key => $value){
-            $album = Album::fromJson($value);
-            $albums[] = $album;
-        }
-
-        $this->render('artists/artist', compact('artist', 'albums'));
-    }
-
-    /**
-     * @param $id
-     * @return void
-     */
-    public function track($id) {
-        $tracks = [];
-        $jsonTrackResult = $this->getTrack($id);
-        foreach ($jsonTrackResult['items'] as $key => $value){
-            $track = Track::fromJson($value);
-            $tracks[] = $track;
-        }
-
-        $this->render('artists/track', compact('tracks'));
+        $this->render('artist/index', compact('artists'));
     }
 
     /**
      * @param $id
      * @return mixed
      */
-    public function getArtist($id): mixed
+    public static function getArtist($id): mixed
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/artists/'. $id);
@@ -88,37 +51,6 @@ class ArtistController extends Controller
         return json_decode($result, true);
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function getAlbum($id): mixed
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/artists/'. $id . '/albums');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($result, true);
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function getTrack($id): mixed
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/albums/'. $id . '/tracks');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($result, true);
-    }
 
     /**
      * @param $artistJson

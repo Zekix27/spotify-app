@@ -300,7 +300,7 @@ class Track
         return new self(
             array_map(static function($data) {
                 return Artist::fromJson($data);
-            }, $data['artists']),
+            }, $data['spotify'] ?? []),
             $data['available_markets'],
             $data['disc_number'],
             $data['duration_ms'],
