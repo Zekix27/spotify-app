@@ -15,7 +15,7 @@ class Track
      * @param string $id
      * @param bool $isLocal
      * @param string $name
-     * @param string $previewUrl
+     * @param string | null $previewUrl
      * @param int $trackNumber
      * @param string $type
      * @param string $uri
@@ -31,7 +31,7 @@ class Track
         public string $id,
         public bool $isLocal,
         public string $name,
-        public string $previewUrl,
+        public string | null $previewUrl,
         public int $trackNumber,
         public string $type,
         public string $uri,
@@ -120,9 +120,9 @@ class Track
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getPreviewUrl(): string
+    public function getPreviewUrl(): string | null
     {
         return $this->previewUrl;
     }
@@ -252,10 +252,10 @@ class Track
     }
 
     /**
-     * @param string $previewUrl
+     * @param string | null $previewUrl
      * @return self
      */
-    public function setPreviewUrl(string $previewUrl): self
+    public function setPreviewUrl(string | null $previewUrl): self
     {
         $this->previewUrl = $previewUrl;
         return $this;

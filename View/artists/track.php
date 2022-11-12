@@ -42,7 +42,7 @@ use App\Entity\Track;
                 <tr>
                     <td>'. $item->getName() .'</td>
                     <td>'. millisecondToMinSecFormat($item->getDurationMs()) .'</td>
-                    <td><a href="'. $item->getExternalUrls()->getSpotify() .'">SUUUUUUI</a></td>
+                    <td><a href="'. $item->getExternalUrls()->getSpotify() .'">Spotify link</a></td>
                     <td>'. $artists .'</td>
                     <td>'. $item->getDiscNumber() .'</td>
                 </tr>

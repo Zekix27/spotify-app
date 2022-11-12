@@ -8,99 +8,146 @@ use App\Entity\Track;
 
 class ArtistController extends Controller
 {
+    /**
+     * @return void
+     */
     public function index()
     {
-        $search = 'orelsan';
+        $artists = [];
+
         if (isset($_POST['search'])){
             $search = $_POST['search'];
-        }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/search?q='. $search .'&type=artist');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $result = curl_exec($ch);
+            curl_close($ch);
 
-        $artists = [];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/search?q='. $search .'&type=artist');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        $jsonResult = json_decode($result, true);
+            $jsonResult = json_decode($result, true);
 
-        foreach ($jsonResult['artists']['items'] as $key => $value){
-
-            if(!isset($value['images'][0])){
-                $artist = Artist::fromJson($value);
-                $images = [];
-                $image = new Image(100, 'https://media.tenor.com/4fH8zSIuSvcAAAAM/cristiano-ronaldo-soccer.gif', 100);
-                array_push($images, $image);
-                $artist->setImages($images);
-            }else{
-                $artist = Artist::fromJson($value);
+            if (isset($jsonResult['artists'])) {
+                foreach ($jsonResult['artists']['items'] as $key => $value){
+                    $artist = $this->checkArtistPicture($value);
+                    $artists[] = $artist;
+                }
             }
-
-            array_push($artists, $artist);
-
         }
-
-        curl_close($ch);
 
         $this->render('artists/index', compact('artists'));
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     public function album($id)
+    {
+        $jsonArtistResult = $this->getArtist($id);
+        $artist = $this->checkArtistPicture($jsonArtistResult);
+
+        $albums = [];
+
+        $jsonAlbumResult = $this->getAlbum($id);
+        foreach ($jsonAlbumResult['items'] as $key => $value){
+            $album = Album::fromJson($value);
+            $albums[] = $album;
+        }
+
+        $this->render('artists/artist', compact('artist', 'albums'));
+    }
+
+    /**
+     * @param $id
+     * @return void
+     */
+    public function track($id) {
+        $tracks = [];
+        $jsonTrackResult = $this->getTrack($id);
+        foreach ($jsonTrackResult['items'] as $key => $value){
+            $track = Track::fromJson($value);
+            $tracks[] = $track;
+        }
+
+        $this->render('artists/track', compact('tracks'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getArtist($id): mixed
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/artists/'. $id);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
-        $jsonResult = json_decode($result, true);
+        curl_close($ch);
 
-        if(!isset($jsonResult['images'][0])){
-            $artist = Artist::fromJson($jsonResult);
-            $images = [];
-            $image = new Image(100, 'https://media.tenor.com/4fH8zSIuSvcAAAAM/cristiano-ronaldo-soccer.gif', 100);
-            array_push($images, $image);
-            $artist->setImages($images);
-        }else{
-            $artist = Artist::fromJson($jsonResult);
-        }
+        return json_decode($result, true);
+    }
 
-        $albums = [];
-
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getAlbum($id): mixed
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/artists/'. $id . '/albums');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
-        $jsonResult = json_decode($result, true);
-
-        foreach ($jsonResult['items'] as $key => $value){
-
-            $album = Album::fromJson($value);
-
-            array_push($albums, $album);
-        }
-
         curl_close($ch);
-        $this->render('artists/artist', compact('artist', 'albums'));
+
+        return json_decode($result, true);
     }
 
-    public function track($id) {
-        $tracks = [];
-
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getTrack($id): mixed
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.spotify.com/v1/albums/'. $id . '/tracks');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $_SESSION['token'] ));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
-        $jsonResult = json_decode($result, true);
+        curl_close($ch);
 
-        foreach ($jsonResult['items'] as $key => $value){
+        return json_decode($result, true);
+    }
 
-            $track = Track::fromJson($value);
+    /**
+     * @param $artistJson
+     * @return Artist
+     */
+    public function checkArtistPicture($artistJson): Artist
+    {
+        if(!isset($artistJson['images'][0])){
+            $artist = Artist::fromJson($artistJson);
+            $images = [];
+            $image = new Image(100, 'https://media.tenor.com/4fH8zSIuSvcAAAAM/cristiano-ronaldo-soccer.gif', 100);
+            $images[] = $image;
+            $artist->setImages($images);
+        }else{
+            $artist = Artist::fromJson($artistJson);
+        }
+        return $artist;
+    }
 
-            array_push($tracks, $track);
+    public function addFavorite() {
+        $artistJson = $this->getArtist($_POST['id']);
+        $artist = $this->checkArtistPicture($artistJson);
+
+        $checkInDB = $artist->findBy(['artistId' => $artist->getArtistId()]);
+
+        if(empty($checkInDB)) {
+            $artist->create();
         }
 
-        curl_close($ch);
-        $this->render('artists/track', compact('tracks'));
+        header('Location:/artist');
     }
 }

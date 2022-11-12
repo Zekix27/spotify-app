@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Entity;
 
 use App\Core\Db;
 
@@ -29,7 +29,15 @@ class Model extends Db
             // SELECT * FROM annonces WHERE actif = ? AND signale = 0
             // bindValue(1, valeur)
             $fields[] = "$field = ?";
-            $values[] = $value;
+            if(is_array($value))
+            {
+                $values[] = json_encode($value);
+            }
+            else
+            {
+                $values[] = $value;
+            }
+
         }
 
         // On transforme le tableau "champs" en une chaine de caractères
@@ -56,7 +64,12 @@ class Model extends Db
             if ($value !== null && $field != 'db' && $field != 'table') {
                 $fields[] = $field;
                 $inter[] = "?";
-                $values[] = $value;
+                if (is_array($value) || is_object($value)) {
+                    $values[] = json_encode($value);
+                }
+                else {
+                    $values[] = $value;
+                }
             }
         }
 

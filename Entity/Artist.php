@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-class Artist
+class Artist extends Model
 {
+    public int $id;
     /**
      * @param ExternalUrl $externalUrls
      * @param Follower|null $followers
      * @param string[] $genres
      * @param string $href
-     * @param string $id
+     * @param string $artistId
      * @param Image[] $images
      * @param string $name
      * @param int|null $popularity
@@ -17,18 +18,19 @@ class Artist
      * @param string $uri
      */
     public function __construct(
-        private ExternalUrl $externalUrls,
-        private ?Follower $followers,
-        private array $genres,
-        private string $href,
-        private string $id,
-        private array $images,
-        private string $name,
-        private ?int $popularity,
-        private string $type,
-        private string $uri,
+        public ExternalUrl $externalUrls,
+        public ?Follower $followers,
+        public array $genres,
+        public string $href,
+        public string $artistId,
+        public array $images,
+        public string $name,
+        public ?int $popularity,
+        public string $type,
+        public string $uri,
         )
     {
+        $this->table = 'artist';
     }
 
     /**
@@ -66,9 +68,9 @@ class Artist
     /**
      * @return string
      */
-    public function getId(): string
+    public function getArtistId(): string
     {
-        return $this->id;
+        return $this->artistId;
     }
 
     /**
@@ -152,12 +154,12 @@ class Artist
     }
 
     /**
-     * @param string $id
+     * @param string $artistId
      * @return self
      */
-    public function setId(string $id): self
+    public function setArtistId(string $artistId): self
     {
-        $this->id = $id;
+        $this->artistId = $artistId;
         return $this;
     }
 

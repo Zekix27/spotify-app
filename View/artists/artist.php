@@ -18,7 +18,7 @@ use App\Entity\{ Artist, Album };
                 foreach ($albums as $item) {
                     $artists = [];
                     foreach ($item->getArtists() as $artist) {
-                        array_push($artists, $artist->getName());
+                        $artists[] = $artist->getName();
                     }
                     $artists = implode(', ', $artists);
                     $link = '"/artist/track/' . $item->getId() . '"';

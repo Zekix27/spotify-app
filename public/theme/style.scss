@@ -1,0 +1,15 @@
+div.card {
+  height: 100%;
+
+  img {
+    object-position: center;
+    object-fit: contain;
+  }
+
+  .favorite {
+    &:hover {
+      fill: red;
+      cursor: pointer;
+    }
+  }
+}
