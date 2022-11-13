@@ -55,14 +55,26 @@
 <footer class="py-3 my-4">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
         <li class="nav-item">
-            <a href="/" class="nav-link px-2 text-muted">Accueil</a>
+            <a href="/spotify" class="nav-link px-2 text-muted">Accueil</a>
         </li>
         <li class="nav-item">
-            <a href="/artist" class="nav-link px-2 text-muted">Artists</a>
+            <a href="/artist" class="nav-link px-2 text-muted">Artist</a>
+        </li>
+        <li class="nav-item">
+            <a href="/album" class="nav-link px-2 text-muted">Album</a>
+        </li>
+        <li class="nav-item">
+            <a href="/track" class="nav-link px-2 text-muted">Track</a>
+        </li>
+        <li class="nav-item">
+            <a href="/erwan" class="nav-link px-2 text-muted">Erwan</a>
+        </li>
+        <li class="nav-item">
+            <a href="/main" class="nav-link px-2 text-muted">Json</a>
         </li>
     </ul>
     <div class="d-flex align-items-center justify-content-center">
-        <span class="mb-3 mb-md-0 text-muted">© 2022 Company, Inc</span>
+        <span class="mb-3 mb-md-0 text-muted">© 2022 Company, SUUUUUUUUUUI Inc</span>
     </div>
 </footer>
 
