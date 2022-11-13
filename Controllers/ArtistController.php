@@ -90,6 +90,8 @@ class ArtistController extends Controller
         $id = $_POST['id'];
         $artist = Artist::createEmptyArtist();
         $artist->delete($id);
+
+        header('Location:/artist');
     }
 
     /**

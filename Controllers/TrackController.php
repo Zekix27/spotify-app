@@ -105,6 +105,8 @@ class TrackController extends Controller
         $id = $_POST['id'];
         $track = Track::createEmptyTrack();
         $track->delete($id);
+
+        header('Location:/track');
     }
 
     /**

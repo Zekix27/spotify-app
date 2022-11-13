@@ -101,6 +101,8 @@ class AlbumController extends Controller
         $id = $_POST['id'];
         $album = Album::createEmptyAlbum();
         $album->delete($id);
+
+        header('Location:/album');
     }
 
     /**

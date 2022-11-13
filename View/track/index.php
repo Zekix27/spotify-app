@@ -64,10 +64,12 @@ use App\Entity\Album;
 
                 /** @var Track[] $favoriteTracks */
                 $svgFill = 'none';
+                $clickFavCall = 'addFavorite';
 
                 foreach ($favoriteTracks as $key => $value){
                     if ($item->getTrackId() === $value->getTrackId()) {
                         $svgFill = 'red';
+                        $clickFavCall = 'deleteFavorite';
                     }
                 }
                 echo '        
@@ -78,7 +80,7 @@ use App\Entity\Album;
                     <td>'. $artists .'</td>
                     <td>'. $item->getDiscNumber() .'</td>
                     <td>
-                        <form action="/track/addFavorite" method="post">
+                        <form action="/track/'. $clickFavCall .'" method="post">
                             <input type="hidden" name="id" value="'. $item->getTrackId() .'">
                             <label>
                                 <input type="submit" style="display: none">

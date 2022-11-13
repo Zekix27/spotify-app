@@ -24,17 +24,19 @@ use App\Entity\Artist;
 
                     /** @var Artist[] $favoriteArtists */
                     $svgFill = 'none';
+                    $clickFavCall = 'addFavorite';
 
                     foreach ($favoriteArtists as $key => $value){
                         if ($item->getArtistId() === $value->getArtistId()) {
                             $svgFill = 'red';
+                            $clickFavCall = 'deleteFavorite';
                         }
                     }
 
                     echo '<div class="col">
                     <div class="card shadow-sm">
                     <img src="' . $item->getImages()[0]->getUrl(). '">
-                    <form action="/artist/addFavorite" method="post">
+                    <form action="/artist/'. $clickFavCall .'" method="post">
                     <input type="hidden" name="id" value="'. $item->getArtistId() .'">
                     <label>
                         <input type="submit" style="display: none">
