@@ -7,7 +7,7 @@ class ExternalUrl
     /**
      * @param string $spotify
      */
-    public function __construct(private string $spotify)
+    public function __construct(public string $spotify)
     {
     }
 

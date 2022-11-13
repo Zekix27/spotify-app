@@ -319,6 +319,33 @@ class Track extends Model
         );
     }
 
+
+    /**
+     * @param array $data
+     * @return self
+     */
+    public static function fromJsonDB(array $data): self
+    {
+        return new self(
+            array_map(static function($data) {
+                return Artist::fromJson($data);
+            }, $data['spotify'] ?? []),
+            json_decode($data['availableMarkets'], true),
+            $data['discNumber'],
+            $data['durationMs'],
+            $data['explicit'],
+            ExternalUrl::fromJson(json_decode($data['externalUrls'], true)),
+            $data['href'],
+            $data['trackId'],
+            $data['isLocal'],
+            $data['name'],
+            $data['previewUrl'],
+            $data['trackNumber'],
+            $data['type'],
+            $data['uri']
+        );
+    }
+
     /**
      * @return self
      */

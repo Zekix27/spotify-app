@@ -236,6 +236,28 @@ class Artist extends Model
     }
 
     /**
+     * @param array $data
+     * @return self
+     */
+    public static function fromJsonDB(array $data): self
+    {
+        return new self(
+            ExternalUrl::fromJson(json_decode($data['externalUrls'], true)),
+            isset($data['followers']) ? Follower::fromJson(json_decode($data['followers'], true)) : null,
+            json_decode($data['genres'], true) ?? [],
+            $data['href'],
+            $data['artistId'],
+            array_map(static function($data) {
+                return Image::fromJson($data);
+            }, json_decode($data['images'], true) ?? []),
+            $data['name'],
+            $data['popularity'] ?? null,
+            $data['type'],
+            $data['uri']
+        );
+    }
+
+    /**
      * @return self
      */
     public static function createEmptyArtist(): self

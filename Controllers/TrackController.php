@@ -35,7 +35,9 @@ class TrackController extends Controller
             }
         }
 
-        $this->render('track/index', compact('tracks', 'isQuery'));
+        $favoriteTracks = $this->getAllTrackFavorite();
+
+        $this->render('track/index', compact('tracks', 'isQuery', 'favoriteTracks'));
     }
 
     public function id($albumId)
@@ -53,7 +55,9 @@ class TrackController extends Controller
             }
         }
 
-        $this->render('track/index', compact('tracks', 'isQuery', 'album'));
+        $favoriteTracks = $this->getAllTrackFavorite();
+
+        $this->render('track/index', compact('tracks', 'isQuery', 'album', 'favoriteTracks'));
     }
 
     public function getTracksByAlbumId($albumId): mixed
@@ -101,5 +105,24 @@ class TrackController extends Controller
         $id = $_POST['id'];
         $track = Track::createEmptyTrack();
         $track->delete($id);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllTrackFavorite(): array
+    {
+        $tracks = [];
+        $track = Track::createEmptyTrack();
+        $trackFavorite = $track->findAll();
+
+        if (is_bool($trackFavorite)) {
+            return $tracks;
+        }
+        foreach ($trackFavorite as $key => $value){
+            $track = Track::fromJsonDB((array)$value);
+            $tracks[] = $track;
+        }
+        return $tracks;
     }
 }

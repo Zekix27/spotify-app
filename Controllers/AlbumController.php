@@ -33,7 +33,9 @@ class AlbumController extends Controller
             }
         }
 
-        $this->render('album/index', compact('albums', 'isQuery'));
+        $favoriteAlbums = $this->getAllAlbumFavorite();
+
+        $this->render('album/index', compact('albums', 'isQuery', 'favoriteAlbums'));
     }
 
     public function id($artistId) {
@@ -49,7 +51,10 @@ class AlbumController extends Controller
                 $albums[] = $album;
             }
         }
-        $this->render('album/index', compact('albums', 'isQuery', 'artist'));
+
+        $favoriteAlbums = $this->getAllAlbumFavorite();
+
+        $this->render('album/index', compact('albums', 'isQuery', 'artist', 'favoriteAlbums'));
     }
 
     /**
@@ -96,5 +101,24 @@ class AlbumController extends Controller
         $id = $_POST['id'];
         $album = Album::createEmptyAlbum();
         $album->delete($id);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllAlbumFavorite(): array
+    {
+        $albums = [];
+        $album = Album::createEmptyAlbum();
+        $albumFavorite = $album->findAll();
+
+        if (is_bool($albumFavorite)) {
+            return $albums;
+        }
+        foreach ($albumFavorite as $key => $value){
+            $album = Album::fromJsonDB((array)$value);
+            $albums[] = $album;
+        }
+        return $albums;
     }
 }

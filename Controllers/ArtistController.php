@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Entity\Artist;
+use App\Entity\ExternalUrl;
 use App\Entity\Image;
 
 class ArtistController extends Controller
@@ -32,7 +33,9 @@ class ArtistController extends Controller
             }
         }
 
-        $this->render('artist/index', compact('artists'));
+        $favoriteArtists = $this->getAllArtistFavorite();
+
+        $this->render('artist/index', compact('artists', 'favoriteArtists'));
     }
 
     /**
@@ -87,5 +90,24 @@ class ArtistController extends Controller
         $id = $_POST['id'];
         $artist = Artist::createEmptyArtist();
         $artist->delete($id);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllArtistFavorite(): array
+    {
+        $artists = [];
+        $artist = Artist::createEmptyArtist();
+        $artistFavorite = $artist->findAll();
+
+        if (is_bool($artistFavorite)) {
+            return $artists;
+        }
+        foreach ($artistFavorite as $key => $value){
+            $artist = Artist::fromJsonDB((array)$value);
+            $artists[] = $artist;
+        }
+        return $artists;
     }
 }

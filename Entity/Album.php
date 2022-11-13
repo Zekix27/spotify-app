@@ -322,6 +322,34 @@ class Album extends Model
     }
 
     /**
+     * @param array $data
+     * @return self
+     */
+    public static function fromJsonDB(array $data): self
+    {
+        return new self(
+            $data['albumGroup'] ?? null,
+            $data['albumType'] ?? null,
+            array_map(static function($data) {
+                return Artist::fromJson($data);
+            }, $data['spotify'] ?? []),
+            json_decode($data['availableMarkets'], true) ?? [],
+            ExternalUrl::fromJson(json_decode($data['externalUrls'], true)),
+            $data['href'],
+            $data['albumId'],
+            array_map(static function($data) {
+                return Image::fromJson($data);
+            }, json_decode($data['images'], true)),
+            $data['name'],
+            $data['releaseDate'],
+            $data['releaseDatePrecision'],
+            $data['totalTracks'],
+            $data['type'],
+            $data['uri']
+        );
+    }
+
+    /**
      * @return self
      */
     public static function createEmptyAlbum(): self

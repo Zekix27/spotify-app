@@ -9,8 +9,8 @@ class Follower
      * @param int $total
      */
     public function __construct(
-        private $href,
-        private int $total
+        public $href,
+        public int $total
     )
     {
     }
