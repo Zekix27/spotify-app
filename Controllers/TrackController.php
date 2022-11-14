@@ -98,7 +98,7 @@ class TrackController extends Controller
             $track->create();
         }
 
-        header('Location:/track');
+        header('Location:/track/favorite');
     }
 
     public function deleteFavorite() {
@@ -106,7 +106,7 @@ class TrackController extends Controller
         $track = Track::createEmptyTrack();
         $track->delete($id);
 
-        header('Location:/track');
+        header('Location:/track/favorite');
     }
 
     /**
@@ -126,5 +126,11 @@ class TrackController extends Controller
             $tracks[] = $track;
         }
         return $tracks;
+    }
+
+    public function favorite() {
+        $isFavorite = true;
+        $tracks = $this->getAllTrackFavorite();
+        $this->render('track/index', compact('tracks', 'isFavorite'));
     }
 }

@@ -9,32 +9,48 @@ use App\Entity\Album;
 <main>
     <div class="d-flex flex-column align-items-center mb-2">
         <?php
-        /** @var boolean $isQuery */
+        if (isset($isFavorite)) {
+            $title = 'Voici vos favoris';
+        }
+        else {
+                /** @var boolean $isQuery */
         $title = 'Cherchez une musique';
 
         if (!$isQuery) {
             /** @var Album $album */
             $title = 'Voici les musiques de l\'album '. $album->getName();
         }
+        }
+
         ?>
         <h1 class="display-5 fw-bold"><?= $title ?></h1>
         <?php
-        if ($isQuery) {
-            echo '   
+        if (!isset($isFavorite)) {
+            if ($isQuery) {
+                echo '   
                     <form class="col-lg-auto mb-3 mb-lg-0 w-50" role="search" method="post" action="track">
                         <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
                     </form>
                 ';
+            }
         }
         ?>
     </div>
+    <?php
+    $buttonTitle = 'Voir vos favoris';
+    $buttonRedirect = '/track/favorite';
+    if (isset($isFavorite)) {
+        $buttonTitle = 'Page track';
+        $buttonRedirect = '/track';
+    }
+    ?>
+    <a href="<?= $buttonRedirect ?>" class="btn btn-primary"><?= $buttonTitle ?></a>
     <div class="container mt-4">
         <table class="table table-dark table-striped">
             <tr>
                 <th>Name</th>
                 <th>Duration</th>
                 <th>Song</th>
-                <th>Author</th>
                 <th>Nombre de disque</th>
                 <th>Favorite</th>
             </tr>
@@ -56,20 +72,20 @@ use App\Entity\Album;
 
             /** @var Track[] $tracks */
             foreach ($tracks as $item) {
-                $artists = [];
-                foreach ($item->getArtists() as $artist) {
-                    $artists[] = $artist->getName();
+                if (isset($isFavorite)) {
+                    $svgFill = 'red';
+                    $clickFavCall = 'deleteFavorite';
                 }
-                $artists = implode(', ', $artists);
+                else {
+                    /** @var Track[] $favoriteTracks */
+                    $svgFill = 'none';
+                    $clickFavCall = 'addFavorite';
 
-                /** @var Track[] $favoriteTracks */
-                $svgFill = 'none';
-                $clickFavCall = 'addFavorite';
-
-                foreach ($favoriteTracks as $key => $value){
-                    if ($item->getTrackId() === $value->getTrackId()) {
-                        $svgFill = 'red';
-                        $clickFavCall = 'deleteFavorite';
+                    foreach ($favoriteTracks as $key => $value){
+                        if ($item->getTrackId() === $value->getTrackId()) {
+                            $svgFill = 'red';
+                            $clickFavCall = 'deleteFavorite';
+                        }
                     }
                 }
                 echo '        
@@ -77,7 +93,6 @@ use App\Entity\Album;
                     <td>'. $item->getName() .'</td>
                     <td>'. millisecondToMinSecFormat($item->getDurationMs()) .'</td>
                     <td><a href="'. $item->getExternalUrls()->getSpotify() .'">Spotify link</a></td>
-                    <td>'. $artists .'</td>
                     <td>'. $item->getDiscNumber() .'</td>
                     <td>
                         <form action="/track/'. $clickFavCall .'" method="post">

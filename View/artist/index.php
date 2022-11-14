@@ -8,11 +8,27 @@ use App\Entity\Artist;
 <main>
     <div class="album py-5 bg-light">
         <div class="d-flex flex-column align-items-center mb-2">
-            <h1 class="display-5 fw-bold">Cherchez un artiste</h1>
+            <?php
+            if (isset($isFavorite)) {
+                echo '<h1 class="display-5 fw-bold">Voici vos favoris</h1>';
+            }
+            else {
+                echo '            <h1 class="display-5 fw-bold">Cherchez un artiste</h1>
             <form class="col-lg-auto mb-3 mb-lg-0 w-50" role="search" method="post" action="artist">
                 <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
-            </form>
+            </form>';
+            }
+            ?>
         </div>
+        <?php
+        $buttonTitle = 'Voir vos favoris';
+        $buttonRedirect = '/artist/favorite';
+        if (isset($isFavorite)) {
+            $buttonTitle = 'Page artiste';
+            $buttonRedirect = '/artist';
+        }
+        ?>
+        <a href="<?= $buttonRedirect ?>" class="btn btn-primary"><?= $buttonTitle ?></a>
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
@@ -20,16 +36,21 @@ use App\Entity\Artist;
                 /** @var Artist[] $artists */
                 foreach ($artists as $item) {
                     $genders = implode(' ', $item->getGenres());
-                    $link = '"album/id/' . $item->getArtistId() . '"';
+                    $link = '"/album/id/' . $item->getArtistId() . '"';
 
-                    /** @var Artist[] $favoriteArtists */
-                    $svgFill = 'none';
-                    $clickFavCall = 'addFavorite';
-
-                    foreach ($favoriteArtists as $key => $value){
-                        if ($item->getArtistId() === $value->getArtistId()) {
-                            $svgFill = 'red';
-                            $clickFavCall = 'deleteFavorite';
+                    if (isset($isFavorite)) {
+                        $svgFill = 'red';
+                        $clickFavCall = 'deleteFavorite';
+                    }
+                    else {
+                        /** @var Artist[] $favoriteArtists */
+                        $svgFill = 'none';
+                        $clickFavCall = 'addFavorite';
+                        foreach ($favoriteArtists as $key => $value){
+                            if ($item->getArtistId() === $value->getArtistId()) {
+                                $svgFill = 'red';
+                                $clickFavCall = 'deleteFavorite';
+                            }
                         }
                     }
 

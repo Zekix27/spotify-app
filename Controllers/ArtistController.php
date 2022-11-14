@@ -83,7 +83,7 @@ class ArtistController extends Controller
             $artist->create();
         }
 
-        header('Location:/artist');
+        header('Location:/artist/favorite');
     }
 
     public function deleteFavorite() {
@@ -91,7 +91,7 @@ class ArtistController extends Controller
         $artist = Artist::createEmptyArtist();
         $artist->delete($id);
 
-        header('Location:/artist');
+        header('Location:/artist/favorite');
     }
 
     /**
@@ -111,5 +111,11 @@ class ArtistController extends Controller
             $artists[] = $artist;
         }
         return $artists;
+    }
+
+    public function favorite() {
+        $isFavorite = true;
+        $artists = $this->getAllArtistFavorite();
+        $this->render('artist/index', compact('artists', 'isFavorite'));
     }
 }

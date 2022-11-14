@@ -94,7 +94,7 @@ class AlbumController extends Controller
             $album->create();
         }
 
-        header('Location:/album');
+        header('Location:/album/favorite');
     }
 
     public function deleteFavorite() {
@@ -102,7 +102,7 @@ class AlbumController extends Controller
         $album = Album::createEmptyAlbum();
         $album->delete($id);
 
-        header('Location:/album');
+        header('Location:/album/favorite');
     }
 
     /**
@@ -122,5 +122,11 @@ class AlbumController extends Controller
             $albums[] = $album;
         }
         return $albums;
+    }
+
+    public function favorite() {
+        $isFavorite = true;
+        $albums = $this->getAllAlbumFavorite();
+        $this->render('album/index', compact('albums', 'isFavorite'));
     }
 }

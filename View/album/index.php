@@ -9,24 +9,41 @@ use App\Entity\Artist;
     <div class="album py-5 bg-light">
         <div class="d-flex flex-column align-items-center mb-2">
             <?php
-            /** @var boolean $isQuery */
-            $title = 'Cherchez un album';
+            if (isset($isFavorite)) {
+                $title = 'Voici vos favoris';
+            }
+            else {
+                /** @var boolean $isQuery */
+                $title = 'Cherchez un album';
 
-            if (!$isQuery) {
-                /** @var Artist $artist */
-                $title = 'Voici les albums de '. $artist->getName();
-            }?>
+                if (!$isQuery) {
+                    /** @var Artist $artist */
+                    $title = 'Voici les albums de '. $artist->getName();
+                }
+            }
+            ?>
             <h1 class="display-5 fw-bold"><?= $title ?></h1>
             <?php
-            if ($isQuery) {
-                echo '   
+            if (!isset($isFavorite)) {
+                if ($isQuery) {
+                    echo '   
                     <form class="col-lg-auto mb-3 mb-lg-0 w-50" role="search" method="post" action="album">
                         <input type="search" name="search" class="form-control" placeholder="Search..." aria-label="Search">
                     </form>
                 ';
+                }
             }
             ?>
         </div>
+        <?php
+        $buttonTitle = 'Voir vos favoris';
+        $buttonRedirect = '/album/favorite';
+        if (isset($isFavorite)) {
+            $buttonTitle = 'Page album';
+            $buttonRedirect = '/album';
+        }
+        ?>
+        <a href="<?= $buttonRedirect ?>" class="btn btn-primary"><?= $buttonTitle ?></a>
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
@@ -40,14 +57,20 @@ use App\Entity\Artist;
                     $artists = implode(', ', $artists);
                     $link = '"/track/id/' . $item->getAlbumId() . '"';
 
-                    /** @var Album[] $favoriteAlbums */
-                    $svgFill = 'none';
-                    $clickFavCall = 'addFavorite';
+                    if (isset($isFavorite)) {
+                        $svgFill = 'red';
+                        $clickFavCall = 'deleteFavorite';
+                    }
+                    else {
+                        /** @var Album[] $favoriteAlbums */
+                        $svgFill = 'none';
+                        $clickFavCall = 'addFavorite';
 
-                    foreach ($favoriteAlbums as $key => $value){
-                        if ($item->getAlbumId() === $value->getAlbumId()) {
-                            $svgFill = 'red';
-                            $clickFavCall = 'deleteFavorite';
+                        foreach ($favoriteAlbums as $key => $value){
+                            if ($item->getAlbumId() === $value->getAlbumId()) {
+                                $svgFill = 'red';
+                                $clickFavCall = 'deleteFavorite';
+                            }
                         }
                     }
 
