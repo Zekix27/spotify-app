@@ -19,7 +19,6 @@ use App\Entity\Artist;
             </form>';
             }
             ?>
-        </div>
         <?php
         $buttonTitle = 'Voir vos favoris';
         $buttonRedirect = '/artist/favorite';
@@ -28,7 +27,8 @@ use App\Entity\Artist;
             $buttonRedirect = '/artist';
         }
         ?>
-        <a href="<?= $buttonRedirect ?>" class="btn btn-primary"><?= $buttonTitle ?></a>
+        <a href="<?= $buttonRedirect ?>" class="btn btn-primary button-switch"><?= $buttonTitle ?></a>
+        </div>
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 

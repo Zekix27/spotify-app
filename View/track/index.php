@@ -35,7 +35,6 @@ use App\Entity\Album;
             }
         }
         ?>
-    </div>
     <?php
     $buttonTitle = 'Voir vos favoris';
     $buttonRedirect = '/track/favorite';
@@ -44,7 +43,8 @@ use App\Entity\Album;
         $buttonRedirect = '/track';
     }
     ?>
-    <a href="<?= $buttonRedirect ?>" class="btn btn-primary"><?= $buttonTitle ?></a>
+    <a href="<?= $buttonRedirect ?>" class="btn btn-primary button-switch"><?= $buttonTitle ?></a>
+    </div>
     <div class="container mt-4">
         <table class="table table-dark table-striped">
             <tr>
