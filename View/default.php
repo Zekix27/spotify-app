@@ -16,7 +16,7 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ul-navbar" style="gap: 10px">
                 <li>
-                    <a href="/spotify" class="btn btn-light">Accueil</a>
+                    <a href="/main" class="btn btn-light">Accueil</a>
                 </li>
                 <li>
                     <a href="/artist" class="btn btn-light">Artist</a>
@@ -31,7 +31,7 @@
                     <a href="/erwan" class="btn btn-light">Erwan</a>
                 </li>
                 <li>
-                    <a href="/main" class="btn btn-light">Json</a>
+                    <a href="/main/json" class="btn btn-light">Json</a>
                 </li>
             </ul>
         </div>
@@ -55,7 +55,7 @@
 <footer class="py-3 my-4">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
         <li class="nav-item">
-            <a href="/spotify" class="nav-link px-2 text-muted">Accueil</a>
+            <a href="/main" class="nav-link px-2 text-muted">Accueil</a>
         </li>
         <li class="nav-item">
             <a href="/artist" class="nav-link px-2 text-muted">Artist</a>
@@ -70,7 +70,7 @@
             <a href="/erwan" class="nav-link px-2 text-muted">Erwan</a>
         </li>
         <li class="nav-item">
-            <a href="/main" class="nav-link px-2 text-muted">Json</a>
+            <a href="/main/json" class="nav-link px-2 text-muted">Json</a>
         </li>
     </ul>
     <div class="d-flex align-items-center justify-content-center">
